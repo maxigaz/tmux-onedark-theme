@@ -81,13 +81,32 @@ status_widgets=$(get "@onedark_widgets")
 time_format=$(get "@onedark_time_format")
 date_format=$(get "@onedark_date_format")
 
-if [[ -z $(get @onedark_time_format) && -z $(get @onedark_date_format) ]]; then
-	insert_separator=$(echo "")
-else
-	insert_separator=$(echo "  ")
+# Build the text of status-right incrementally so that depending on whether the user has defined any time/date format and widgets, we can hide/show separators automatically.
+
+status_right_text=""
+
+if [[ -n $(get @onedark_time_format) ]]; then
+	status_right_text+="#[fg=$onedark_white,bg=$onedark_black,nounderscore,noitalics]${time_format} "
 fi
 
-set "status-right" "#[fg=$onedark_white,bg=$onedark_black,nounderscore,noitalics]${time_format}${insert_separator}${date_format} #[fg=$onedark_visual_grey,bg=$onedark_black]#[fg=$onedark_visual_grey,bg=$onedark_visual_grey]#[fg=$onedark_white, bg=$onedark_visual_grey]${status_widgets} #[fg=$onedark_green,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]#[fg=$onedark_black,bg=$onedark_green,bold] #h #[fg=$onedark_yellow, bg=$onedark_green]#[fg=$onedark_red,bg=$onedark_yellow]"
+if [[ -n $(get @onedark_time_format) && -n $(get @onedark_date_format) ]]; then
+   status_right_text+=" "
+fi
+
+if [[ -n $(get @onedark_date_format) ]]; then
+   status_right_text+="${date_format} "
+fi
+
+if [[ -n $(get @onedark_widgets) ]]; then
+   status_right_text+="#[fg=$onedark_visual_grey,bg=$onedark_black]#[fg=$onedark_visual_grey,bg=$onedark_visual_grey]#[fg=$onedark_white, bg=$onedark_visual_grey]${status_widgets} #[fg=$onedark_green,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]"
+else
+   status_right_text+="#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
+fi
+
+status_right_text+="#[fg=$onedark_black,bg=$onedark_green,bold] #h #[fg=$onedark_yellow, bg=$onedark_green]#[fg=$onedark_red,bg=$onedark_yellow]"
+
+set "status-right" "$status_right_text"
+
 set "status-left" "#[fg=$onedark_black,bg=$onedark_green,bold] #S #{prefix_highlight}#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
 
 set "window-status-format" "#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]#[fg=$onedark_white,bg=$onedark_black] #I  #W #[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]"
