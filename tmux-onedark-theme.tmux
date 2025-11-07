@@ -77,9 +77,11 @@ set "@prefix_highlight_bg" "$onedark_green"
 set "@prefix_highlight_copy_mode_attr" "fg=$onedark_black,bg=$onedark_green"
 set "@prefix_highlight_output_prefix" "  "
 
+# Theme options
 status_widgets=$(get "@onedark_widgets")
 time_format=$(get "@onedark_time_format")
 date_format=$(get "@onedark_date_format")
+status_right_yellow_red_arrows=$(get "@onedark_status_right_yellow_red_arrows")
 
 # Build the text of status-right incrementally so that depending on whether the user has defined any time/date format and widgets, we can hide/show separators automatically.
 
@@ -103,7 +105,13 @@ else
    status_right_text+="#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
 fi
 
-status_right_text+="#[fg=$onedark_black,bg=$onedark_green,bold] #h #[fg=$onedark_yellow, bg=$onedark_green]#[fg=$onedark_red,bg=$onedark_yellow]"
+status_right_text+="#[fg=$onedark_black,bg=$onedark_green,bold] #h "
+
+# Display arrows on the far right edge of status-right?
+# (These are only decorative items.)
+if [[ status_right_yellow_red_arrows == "on" ]]; then
+   status_right_text+="#[fg=$onedark_yellow, bg=$onedark_green]#[fg=$onedark_red,bg=$onedark_yellow]"
+fi
 
 set "status-right" "$status_right_text"
 
