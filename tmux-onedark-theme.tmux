@@ -85,19 +85,19 @@ date_format=$(get "@onedark_date_format")
 
 status_right_text=""
 
-if [[ -n $(get @onedark_time_format) ]]; then
+if [[ -n $time_format ]]; then
 	status_right_text+="#[fg=$onedark_white,bg=$onedark_black,nounderscore,noitalics]${time_format} "
 fi
 
-if [[ -n $(get @onedark_time_format) && -n $(get @onedark_date_format) ]]; then
+if [[ -n $time_format && -n $date_format ]]; then
    status_right_text+=" "
 fi
 
-if [[ -n $(get @onedark_date_format) ]]; then
+if [[ -n $date_format ]]; then
    status_right_text+="${date_format} "
 fi
 
-if [[ -n $(get @onedark_widgets) ]]; then
+if [[ -n $status_widgets ]]; then
    status_right_text+="#[fg=$onedark_visual_grey,bg=$onedark_black]#[fg=$onedark_visual_grey,bg=$onedark_visual_grey]#[fg=$onedark_white, bg=$onedark_visual_grey]${status_widgets} #[fg=$onedark_green,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]"
 else
    status_right_text+="#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
