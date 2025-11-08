@@ -123,5 +123,25 @@ set "status-right" "$status_right_text"
 
 set "status-left" "#[fg=$onedark_black,bg=$onedark_green,bold] #S #{prefix_highlight}#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
 
-set "window-status-format" "#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]#[fg=$onedark_white,bg=$onedark_black] #I  #W #{?pane_marked,#[bold]M ,}#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]"
-set "window-status-current-format" "#[fg=$onedark_black,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]#[fg=$onedark_white,bg=$onedark_visual_grey,nobold] #I  #W #{?pane_marked,#[bold]M ,}#[fg=$onedark_visual_grey,bg=$onedark_black,nobold,nounderscore,noitalics]"
+# Status of window not currently in focus
+window_status_format_text="#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]"
+window_status_format_text+="#[fg=$onedark_white,bg=$onedark_black] #I  #W"
+# Pane mark and zoom indicators
+# Insert an extra space if either indicator is present.
+window_status_format_text+="#{?#{||:#{pane_marked},#{window_zoomed_flag}}, ,}"
+window_status_format_text+="#{?pane_marked,#[bold]M,}"
+window_status_format_text+="#{?window_zoomed_flag,#[bold]Z,}"
+window_status_format_text+="#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics] "
+
+set "window-status-format" "$window_status_format_text"
+
+# Status of current window
+# (Almost the same as the non-current one, except the background is different.)
+window_status_current_format_text="#[fg=$onedark_black,bg=$onedark_visual_grey,nobold,nounderscore,noitalics]"
+window_status_current_format_text+="#[fg=$onedark_white,bg=$onedark_visual_grey,nobold] #I  #W"
+window_status_current_format_text+="#{?#{||:#{pane_marked},#{window_zoomed_flag}}, ,}"
+window_status_current_format_text+="#{?pane_marked,#[bold]M,}"
+window_status_current_format_text+="#{?window_zoomed_flag,#[bold]Z,}"
+window_status_current_format_text+="#[fg=$onedark_white,bg=$onedark_visual_grey,nobold] #[fg=$onedark_visual_grey,bg=$onedark_black,nobold,nounderscore,noitalics]"
+
+set "window-status-current-format" "$window_status_current_format_text"
