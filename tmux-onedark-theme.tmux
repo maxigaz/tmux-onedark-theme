@@ -88,6 +88,7 @@ status_widgets=$(get "@onedark_widgets")
 time_format=$(get "@onedark_time_format")
 date_format=$(get "@onedark_date_format")
 status_right_yellow_red_arrows=$(get "@onedark_status_right_yellow_red_arrows")
+prefix_indicator=$(get "@onedark_prefix_indicator")
 
 # Build the text of status-right incrementally so that depending on whether the user has defined any time/date format and widgets, we can hide/show separators automatically.
 
@@ -121,7 +122,16 @@ fi
 
 set "status-right" "$status_right_text"
 
-set "status-left" "#[fg=$onedark_black,bg=$onedark_green,bold] #S #{prefix_highlight}#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
+# Prefix indicator: shows when the prefix key is pressed
+if [[ $prefix_indicator == "on" ]]; then
+   status_left_text="#[fg=$onedark_black,bold]#{?client_prefix,#[bg=$onedark_white],#[bg=$onedark_green]} #S "
+   status_left_text+="#{?client_prefix,#[fg=$onedark_white],#[fg=$onedark_green]}#[bg=$onedark_black]"
+else
+   status_left_text="#[fg=$onedark_black,bg=$onedark_green,bold] #S "
+   status_left_text+="#[fg=$onedark_green,bg=$onedark_black,nobold,nounderscore,noitalics]"
+fi
+
+set "status-left" "$status_left_text"
 
 # Status of window not currently in focus
 window_status_format_text="#[fg=$onedark_black,bg=$onedark_black,nobold,nounderscore,noitalics]"
